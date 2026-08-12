@@ -6,13 +6,43 @@
   --demo-text: #172033;
 
   /* 演示站次要文字色；用于说明、标签和辅助信息。 */
-  --demo-muted: #697386;
+  --demo-muted: #6c778a;
+
+  /* 演示站长页的冷灰背景；用于衬托白色实体卡片，不用于表格内容内部。 */
+  --demo-page: #f7f9fc;
+
+  /* 演示站主要实体表面；用于 Demo 卡片、菜单和高优先级内容区域。 */
+  --demo-surface: #fff;
+
+  /* 演示站次级实体表面；用于表头、代码栏和轻量辅助区域。 */
+  --demo-surface-soft: #fafbfe;
 
   /* 演示卡片实体边框色；用于区分表格演示与页面背景。 */
-  --demo-border: #e5eaf2;
+  --demo-border: #e3e8f0;
+
+  /* 演示站弱分隔线颜色；用于卡片内部、代码区和表格内部线条。 */
+  --demo-border-soft: #edf0f5;
 
   /* 演示站浅色衬底；用于代码块和次级信息区域。 */
-  --demo-soft: #f6f8fb;
+  --demo-soft: #f7f9fc;
+
+  /* 小型控件圆角；用于代码标签、文字按钮与技术属性标签，单位固定为 px。 */
+  --demo-radius-sm: 7px;
+
+  /* 中型内容圆角；用于表格、安装命令和普通控件，单位固定为 px。 */
+  --demo-radius-md: 12px;
+
+  /* 大型内容圆角；用于 Demo 实体卡片，单位固定为 px。 */
+  --demo-radius-lg: 16px;
+
+  /* 胶囊标签圆角；用于阶段和能力标签，只接受足够大的 CSS 长度值。 */
+  --demo-radius-pill: 999px;
+
+  /* Demo 卡片默认双层阴影；用于从冷灰页面中建立轻量实体层级。 */
+  --demo-card-shadow: 0 1px 2px rgb(27 43 70 / 3%), 0 12px 36px rgb(38 61 100 / 4%);
+
+  /* Demo 卡片悬浮双层阴影；只增强边缘清晰度，不产生位置移动。 */
+  --demo-card-shadow-hover: 0 2px 4px rgb(27 43 70 / 4%), 0 16px 42px rgb(38 61 100 / 6%);
 
   /* 页面滚动定位预留高度；与顶部浮动导航的实际占用保持一致。 */
   --demo-anchor-offset: 112px;
@@ -42,7 +72,7 @@
     sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  background: #fff;
+  background: var(--demo-page);
 }
 
 * {
@@ -57,7 +87,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  background: #fff;
+  background: var(--demo-page);
 }
 
 button,

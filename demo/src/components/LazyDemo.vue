@@ -120,10 +120,10 @@ onUnmounted(() => {
     min-height: inherit;
     flex-direction: column;
     overflow: hidden;
-    border: 1px solid #e5eaf2;
-    border-radius: 14px;
-    background: #fff;
-    box-shadow: 0 1px 2px rgb(34 52 84 / 3%);
+    border: 0;
+    border-radius: var(--demo-radius-lg);
+    background: var(--demo-surface);
+    box-shadow: var(--demo-card-shadow);
   }
 
   .lazy-demo__status {
@@ -191,9 +191,9 @@ onUnmounted(() => {
     flex-direction: column;
     margin: 0 26px;
     overflow: hidden;
-    border: 1px solid #e7ebf1;
-    border-radius: 8px;
-    background: #fafbfd;
+    border: 0;
+    border-radius: 10px;
+    background: var(--demo-surface-soft);
   }
 
   .lazy-demo__table-head,
@@ -204,7 +204,7 @@ onUnmounted(() => {
     gap: 18px;
     min-height: 48px;
     padding: 0 18px;
-    border-bottom: 1px solid #edf0f5;
+    border-bottom: 0;
 
     span {
       width: min(76px, 84%);
@@ -224,7 +224,7 @@ onUnmounted(() => {
   .lazy-demo__foot {
     align-items: center;
     margin-top: auto;
-    border-top: 1px solid #eef1f5;
+    border-top: 0;
   }
 }
 

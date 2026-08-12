@@ -77,7 +77,7 @@ async function copyPreviewLink() {
   min-height: 100vh;
   overflow: clip;
   color: var(--demo-text);
-  background: linear-gradient(180deg, #f7faff 0, #fff 560px);
+  background: linear-gradient(180deg, #f7faff 0, #fff 560px, var(--demo-page) 900px);
 
   .preview-page__glow {
     position: absolute;
@@ -201,6 +201,17 @@ async function copyPreviewLink() {
       font-size: 13px;
       text-decoration: none;
       background: rgb(255 255 255 / 70%);
+      box-shadow: 0 1px 1px rgb(31 47 75 / 2%);
+      transition:
+        border-color var(--demo-motion-fast) ease,
+        color var(--demo-motion-fast) ease,
+        background-color var(--demo-motion-fast) ease;
+
+      &:hover {
+        border-color: #cad5e5;
+        color: #315fae;
+        background: #fff;
+      }
 
       &.is-active {
         border-color: #afc5ed;

@@ -356,7 +356,7 @@ onUnmounted(() => {
   min-height: 100vh;
   overflow: clip;
   color: var(--demo-text);
-  background: linear-gradient(180deg, #f9fbff 0, #fff 520px);
+  background: linear-gradient(180deg, #f9fbff 0, #fff 760px, var(--demo-page) 1180px);
 
   .demo-page__glow {
     position: absolute;
@@ -384,9 +384,9 @@ onUnmounted(() => {
     position: sticky;
     top: 0;
     z-index: 50;
-    width: min(1440px, 100%);
+    width: min(1380px, calc(100% - 64px));
     margin: 0 auto;
-    padding: 18px 30px 0;
+    padding-top: 18px;
     transition: padding var(--demo-motion-normal) var(--demo-ease-out);
 
     &.is-compact {
@@ -394,8 +394,14 @@ onUnmounted(() => {
 
       .demo-page__nav {
         min-height: 50px;
+        border-color: rgb(255 255 255 / 82%);
         border-radius: 15px;
-        box-shadow: 0 12px 30px rgb(36 57 92 / 10%);
+        background:
+          linear-gradient(132deg, rgb(255 255 255 / 88%), rgb(255 255 255 / 72%)),
+          rgb(239 245 255 / 52%);
+        box-shadow:
+          0 1px 0 rgb(255 255 255 / 88%) inset,
+          0 10px 30px rgb(36 57 92 / 9%);
       }
     }
   }
@@ -453,6 +459,7 @@ onUnmounted(() => {
       text-decoration: none;
       background: transparent;
       cursor: pointer;
+      transition: color var(--demo-motion-fast) ease;
 
       &:hover {
         color: var(--demo-brand);
@@ -547,6 +554,15 @@ onUnmounted(() => {
       text-decoration: none;
       background: rgb(255 255 255 / 66%);
       cursor: pointer;
+      transition:
+        border-color var(--demo-motion-fast) ease,
+        background-color var(--demo-motion-fast) ease,
+        box-shadow var(--demo-motion-fast) ease;
+
+      &:hover {
+        border-color: #bdcbe0;
+        background: rgb(255 255 255 / 88%);
+      }
     }
 
     button {
@@ -554,6 +570,12 @@ onUnmounted(() => {
       color: #fff;
       background: #3568d4;
       box-shadow: 0 10px 22px rgb(53 104 212 / 20%);
+
+      &:hover {
+        border-color: #2f60c5;
+        background: #2f60c5;
+        box-shadow: 0 12px 26px rgb(53 104 212 / 24%);
+      }
     }
   }
 
@@ -565,11 +587,11 @@ onUnmounted(() => {
 
     span {
       padding: 7px 11px;
-      border: 1px solid rgb(210 221 239 / 72%);
-      border-radius: 999px;
+      border: 1px solid rgb(214 223 237 / 64%);
+      border-radius: var(--demo-radius-pill);
       color: #65738b;
       font-size: 12px;
-      background: rgb(255 255 255 / 52%);
+      background: rgb(255 255 255 / 44%);
     }
   }
 
@@ -579,7 +601,7 @@ onUnmounted(() => {
     align-items: end;
     gap: 70px;
     padding: 66px 0 80px;
-    border-top: 1px solid #e7ecf3;
+    border-top: 1px solid var(--demo-border-soft);
     scroll-margin-top: var(--demo-anchor-offset);
 
     &:focus {
@@ -611,9 +633,10 @@ onUnmounted(() => {
     align-items: center;
     gap: 14px;
     padding: 15px 16px;
-    border: 1px solid #e1e7f0;
-    border-radius: 12px;
-    background: #f8fafc;
+    border: 1px solid var(--demo-border);
+    border-radius: var(--demo-radius-md);
+    background: var(--demo-surface-soft);
+    box-shadow: 0 1px 1px rgb(31 47 75 / 2%);
 
     span {
       color: #7a8698;
@@ -661,7 +684,7 @@ onUnmounted(() => {
 
   .demo-page__section-head {
     padding: 58px 0 32px;
-    border-top: 1px solid #e7ecf3;
+    border-top: 1px solid var(--demo-border-soft);
 
     h2 {
       margin: 14px 0 12px;
@@ -701,7 +724,7 @@ onUnmounted(() => {
 
   .demo-page__toc {
     position: relative;
-    padding: 18px 12px;
+    padding: 20px 13px;
   }
 
   .demo-page__progress {
@@ -736,7 +759,7 @@ onUnmounted(() => {
 
     strong {
       padding: 0 10px 7px;
-      color: #8792a4;
+      color: #98a1b1;
       font-size: 11px;
       letter-spacing: 0.08em;
     }
@@ -744,9 +767,9 @@ onUnmounted(() => {
 
   .demo-page__toc-link {
     position: relative;
-    padding: 7px 10px 7px 13px;
+    padding: 8px 10px 8px 13px;
     border: 0;
-    border-radius: 8px;
+    border-radius: var(--demo-radius-sm);
     color: #667287;
     font-size: 13px;
     text-align: left;
@@ -770,7 +793,7 @@ onUnmounted(() => {
     &:hover,
     &.is-active {
       color: var(--demo-brand);
-      background: rgb(234 241 255 / 58%);
+      background: rgb(237 243 255 / 52%);
     }
 
     &.is-active::before {
@@ -800,7 +823,7 @@ onUnmounted(() => {
     align-items: center;
     justify-content: space-between;
     margin: 0 auto;
-    border-top: 1px solid #e7ecf3;
+    border-top: 1px solid var(--demo-border-soft);
     color: #788498;
     font-size: 13px;
 
@@ -844,6 +867,9 @@ onUnmounted(() => {
       width: 230px;
       padding: 14px;
       border-radius: 16px;
+      box-shadow:
+        0 1px 0 rgb(255 255 255 / 85%) inset,
+        0 16px 36px rgb(39 57 92 / 12%);
     }
 
     .demo-page__mobile-group {
@@ -868,6 +894,9 @@ onUnmounted(() => {
         font-size: 13px;
         text-align: left;
         background: transparent;
+        transition:
+          color var(--demo-motion-fast) ease,
+          background-color var(--demo-motion-fast) ease;
 
         &.is-active {
           color: var(--demo-brand);
@@ -881,7 +910,8 @@ onUnmounted(() => {
 @media (max-width: 767px) {
   .demo-page {
     .demo-page__topbar {
-      padding: 12px 12px 0;
+      width: min(100% - 28px, 1380px);
+      padding-top: 12px;
     }
 
     .demo-page__nav {

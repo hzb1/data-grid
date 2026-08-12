@@ -186,14 +186,14 @@ watch(
   display: flex;
   align-items: stretch;
   overflow: hidden;
-  border: 1px solid rgb(255 255 255 / 70%);
+  border: 1px solid rgb(255 255 255 / 76%);
   border-radius: 22px;
   color: inherit;
   background:
-    linear-gradient(132deg, rgb(255 255 255 / 68%), rgb(255 255 255 / 30%)), rgb(239 245 255 / 32%);
+    linear-gradient(132deg, rgb(255 255 255 / 72%), rgb(255 255 255 / 38%)), rgb(239 245 255 / 36%);
   box-shadow:
-    0 1px 0 rgb(255 255 255 / 78%) inset,
-    0 14px 42px rgb(42 66 116 / 10%);
+    0 1px 0 rgb(255 255 255 / 86%) inset,
+    0 10px 32px rgb(45 65 105 / 8%);
   backdrop-filter: blur(16px) saturate(135%) brightness(1.04);
   transition:
     transform 0.22s ease,
@@ -208,7 +208,7 @@ watch(
     transform: translateY(-1px);
     box-shadow:
       0 1px 0 rgb(255 255 255 / 86%) inset,
-      0 18px 46px rgb(42 66 116 / 14%);
+      0 14px 38px rgb(42 66 116 / 11%);
   }
 
   &:focus-visible {
@@ -222,7 +222,7 @@ watch(
     inset: 1px;
     z-index: 0;
     border-radius: inherit;
-    box-shadow: 0 0 0 0.5px rgb(255 255 255 / 45%) inset;
+    box-shadow: 0 0 0 0.5px rgb(255 255 255 / 62%) inset;
     content: '';
     pointer-events: none;
   }
