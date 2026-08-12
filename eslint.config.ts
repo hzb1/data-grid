@@ -12,7 +12,7 @@ export default defineConfigWithVueTs(
     name: 'data-grid/files-to-lint',
     files: ['**/*.{vue,ts,mts,tsx}'],
   },
-  globalIgnores(['**/dist/**', '**/coverage/**', '**/node_modules/**']),
+  globalIgnores(['**/dist/**', '**/demo-dist/**', '**/coverage/**', '**/node_modules/**']),
   ...pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
   {

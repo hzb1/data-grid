@@ -1,0 +1,105 @@
+:root {
+  /* 演示站主品牌色；用于当前目录、主按钮和键盘焦点，只接受合法颜色值。 */
+  --demo-brand: #3568d4;
+
+  /* 演示站主文字色；用于标题和正文，必须与白色背景保持足够对比度。 */
+  --demo-text: #172033;
+
+  /* 演示站次要文字色；用于说明、标签和辅助信息。 */
+  --demo-muted: #697386;
+
+  /* 演示卡片实体边框色；用于区分表格演示与页面背景。 */
+  --demo-border: #e5eaf2;
+
+  /* 演示站浅色衬底；用于代码块和次级信息区域。 */
+  --demo-soft: #f6f8fb;
+
+  /* 页面滚动定位预留高度；与顶部浮动导航的实际占用保持一致。 */
+  --demo-anchor-offset: 112px;
+
+  /* 微交互的快速反馈时长；用于按钮、目录和代码标签，单位固定为毫秒。 */
+  --demo-motion-fast: 140ms;
+
+  /* 页面级状态变化的标准时长；用于导航收紧和场景进入反馈，单位固定为毫秒。 */
+  --demo-motion-normal: 260ms;
+
+  /* 演示站进入动画的缓出曲线；只用于轻量位移与透明度变化。 */
+  --demo-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* 锚点定位和重置操作的低饱和聚焦环；仅用于短暂状态确认。 */
+  --demo-focus-ring: 0 0 0 3px rgb(53 104 212 / 14%);
+
+  color: var(--demo-text);
+  font-family:
+    Inter,
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'PingFang SC',
+    'Hiragino Sans GB',
+    'Microsoft YaHei',
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  background: #fff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: #fff;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--demo-brand);
+  outline-offset: 3px;
+}
+
+code,
+pre {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+::selection {
+  color: #102755;
+  background: #dce8ff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

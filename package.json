@@ -46,6 +46,9 @@
   },
   "scripts": {
     "build": "vite build",
+    "demo:dev": "vite --config demo/vite.config.ts",
+    "demo:build": "vite build --config demo/vite.config.ts",
+    "demo:type-check": "vue-tsc -p demo/tsconfig.json --noEmit",
     "type-check": "vue-tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -57,7 +60,7 @@
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
     "check:package": "publint && attw --pack .",
-    "check": "npm run type-check && npm run lint && npm run format:check && npm run test && npm run check:row-key && npm run build && npm run check:runtime && npm run check:package",
+    "check": "npm run type-check && npm run demo:type-check && npm run lint && npm run format:check && npm run test && npm run check:row-key && npm run build && npm run demo:build && npm run check:runtime && npm run check:package",
     "prepack": "npm run build",
     "prepublishOnly": "npm run check"
   },

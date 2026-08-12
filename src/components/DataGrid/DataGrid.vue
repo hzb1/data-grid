@@ -6,7 +6,7 @@
 
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-quartz.css'
-import { CloseBold, FullScreen, Setting } from '@element-plus/icons-vue'
+import { CloseBold, FullScreen, Loading, Setting } from '@element-plus/icons-vue'
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import type {
   CellClassParams,
