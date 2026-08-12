@@ -1,14 +1,18 @@
-import { fileURLToPath } from 'node:url'
-import { mergeConfig, defineConfig, configDefaults } from 'vitest/config'
-import viteConfig from './vite.config'
+/** DataGrid 单元测试配置。 */
+
+import { mergeConfig, defineConfig } from 'vitest/config'
+import viteConfig from './vite.config.ts'
 
 export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
-      environment: 'jsdom',
-      exclude: [...configDefaults.exclude, 'e2e/**'],
-      root: fileURLToPath(new URL('./', import.meta.url)),
+      environment: 'node',
+      include: ['src/**/*.test.ts'],
+      coverage: {
+        provider: 'v8',
+        reporter: ['text', 'html', 'lcov'],
+      },
     },
   }),
 )
