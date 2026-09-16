@@ -3,14 +3,10 @@
 import { defineAsyncComponent } from 'vue'
 import BasicDemo from '@demo/demos/BasicDemo.vue'
 import basicSource from '@demo/demos/BasicDemo.vue?raw'
-import editValidationSource from '@demo/demos/EditValidationDemo.vue?raw'
-import filterSelectionSource from '@demo/demos/FilterSelectionDemo.vue?raw'
+import complexSource from '@demo/demos/ComplexDemo.vue?raw'
 import type { DemoDefinition, DemoId, DemoNavGroup } from './demo.types'
 
-const FilterSelectionDemo = defineAsyncComponent(
-  () => import('@demo/demos/FilterSelectionDemo.vue'),
-)
-const EditValidationDemo = defineAsyncComponent(() => import('@demo/demos/EditValidationDemo.vue'))
+const ComplexDemo = defineAsyncComponent(() => import('@demo/demos/ComplexDemo.vue'))
 
 const purchaseModelSource = String.raw`interface PurchaseRow extends DataGridRow {
   id: number
@@ -26,6 +22,34 @@ const purchaseModelSource = String.raw`interface PurchaseRow extends DataGridRow
   note: string
 }`
 
+const complexOrderModelSource = String.raw`interface ComplexOrderRow extends DataGridRow {
+  id: number
+  orderNo: string
+  lineNo: number
+  status: 'draft' | 'confirmed' | 'delivering' | 'completed'
+  priority: 'low' | 'normal' | 'high' | 'urgent'
+  businessUnit: string
+  projectName: string
+  customerName: string
+  productCode: string
+  productName: string
+  category: string
+  supplier: string
+  region: string
+  salesOwner: string
+  orderedQuantity: number
+  shippedQuantity: number
+  unitPrice: number
+  discountRate: number
+  taxRate: number
+  untaxedAmount: number
+  taxedAmount: number
+  plannedDeliveryDate: string
+  actualDeliveryDate: string
+  urgent: boolean
+  note: string
+}`
+
 /** 将演示站内部源码引用转换为包使用者可复制的公开入口。 */
 function toPublicSource(source: string) {
   return source
@@ -35,6 +59,7 @@ function toPublicSource(source: string) {
     )
     .replaceAll("'@data-grid/components/DataGrid/types'", "'@hzb-ui/data-grid'")
     .replaceAll("'@demo/data/purchase'", "'./purchase'")
+    .replaceAll("'@demo/data/complex-order'", "'./complex-order'")
 }
 
 /** 所有演示场景的唯一注册入口。 */
@@ -73,82 +98,56 @@ export const demoRegistry: DemoDefinition[] = [
     ],
   },
   {
-    id: 'filter-selection',
-    title: '筛选与选择',
-    navLabel: '筛选与选择',
-    level: '交互',
-    description: '把不同字段映射成合适的表头筛选器，并让全选范围自动跟随筛选结果。',
-    hint: '选择一个供应商，再点击表头复选框，只会选中当前筛选结果。',
-    apiNames: ['searchType', 'rowSelection', 'selectedRowKeys', 'filter-change'],
-    keywords: ['表头筛选', '行号', '多选', '受控选择'],
-    component: FilterSelectionDemo,
-    minHeight: 610,
-    eager: false,
-    codeTabs: [
-      {
-        id: 'complete',
-        label: '完整示例',
-        language: 'vue',
-        source: toPublicSource(filterSelectionSource),
-      },
-      {
-        id: 'config',
-        label: '核心配置',
-        language: 'typescript',
-        source: String.raw`const supplierColumn: DataGridColumn<PurchaseRow> = {
-  field: 'supplier',
-  title: '供应商',
-  options: supplierOptions,
-  searchType: 'select',
-  filter: { placeholder: '选择供应商' },
-}
-
-const rowSelection = {
-  mode: 'multiple',
-  selectOnRowClick: true,
-  selectAll: 'filtered',
-} as const`,
-      },
-      { id: 'model', label: '数据结构', language: 'typescript', source: purchaseModelSource },
-    ],
-  },
-  {
-    id: 'edit-validation',
-    title: '编辑与业务校验',
-    navLabel: '编辑与校验',
+    id: 'complex',
+    title: '复杂订单明细表格',
+    navLabel: '复杂表格',
     level: '业务',
-    description: '在单元格内完成数据录入，所有修改统一进入派生计算、校验和撤销历史。',
-    hint: '把数量改成 0，或打开“加急”后清空备注，再点击校验全部数据。',
-    apiNames: ['mode', 'editor', 'rules', 'processRowChange', 'validation'],
-    keywords: ['单元格编辑', '自动计算', '字段校验', '跨字段校验'],
-    component: EditValidationDemo,
-    minHeight: 640,
+    description:
+      '用 1,000 条本地订单明细验证高密度、多表头业务场景，并集中体验筛选、编辑、校验、汇总与列配置。',
+    hint: '筛选状态后全选结果，双击任意可编辑单元格修改数据，再试试右上角的表格配置。',
+    apiNames: [
+      'searchType',
+      'rowSelection',
+      'processRowChange',
+      'validation',
+      'columnSetting',
+      'clipboard',
+    ],
+    keywords: ['1,000 行', '多表头', '筛选', '编辑', '校验', '列配置', '复制粘贴'],
+    component: ComplexDemo,
+    minHeight: 720,
     eager: false,
     codeTabs: [
       {
         id: 'complete',
         label: '完整示例',
         language: 'vue',
-        source: toPublicSource(editValidationSource),
+        source: toPublicSource(complexSource),
       },
       {
         id: 'config',
         label: '核心配置',
         language: 'typescript',
-        source: String.raw`const quantityColumn: DataGridColumn<PurchaseRow> = {
-  field: 'quantity',
-  title: '数量',
-  editor: { type: 'number', editable: true, componentProps: { min: 0 } },
-  rules: [
-    { validator: (value) => Number(value) > 0 || '采购数量必须大于 0' },
-  ],
-}
-
-function recalculateAmount(row: PurchaseRow) {
-  return { ...row, amount: Number((row.quantity * row.unitPrice).toFixed(2)) }
-}`,
+        source: String.raw`<DataGrid
+  v-model="rows"
+  v-model:selected-row-keys="selectedRowKeys"
+  :columns="columns"
+  row-key="id"
+  mode="edit"
+  editor-display-mode="onDemand"
+  :row-selection="{ mode: 'multiple', selectAll: 'filtered' }"
+  :clipboard="{ copyHeaders: true, repeatToSelection: true }"
+  :column-setting="{
+    key: 'demo-complex-order-grid',
+    description: '复杂订单明细演示表格',
+    minVisibleCount: 6,
+  }"
+  :summary="{ label: '当前筛选合计', scope: 'filtered' }"
+  :process-row-change="recalculateAmounts"
+  :validation="{ center: true, scrollToFirstError: true }"
+/>`,
       },
-      { id: 'model', label: '数据结构', language: 'typescript', source: purchaseModelSource },
+      { id: 'model', label: '数据结构', language: 'typescript', source: complexOrderModelSource },
     ],
   },
 ]

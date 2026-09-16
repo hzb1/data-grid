@@ -2,7 +2,7 @@
 /**
  * 页面名称：DataGrid 渐进式演示站
  * 页面 URL：/
- * 业务描述：通过文档式长页渐进展示 DataGrid 的基础展示、筛选选择和编辑校验能力。
+ * 业务描述：通过文档式长页展示 DataGrid 的基础表格与高密度复杂订单明细表格能力。
  */
 
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
@@ -296,8 +296,11 @@ onUnmounted(() => {
         <article class="demo-page__content">
           <header class="demo-page__section-head">
             <p class="demo-page__section-index">02 / 代码演示</p>
-            <h2>从简单开始，逐步增加能力</h2>
-            <p>每个示例只增加一组职责。代码默认收起，页面始终把可交互表格放在第一位。</p>
+            <h2>从基础展示，到高密度业务明细</h2>
+            <p>
+              两个示例分别覆盖最小可用列配置与 1,000
+              行多表头业务场景。代码默认收起，页面始终把可交互表格放在第一位。
+            </p>
           </header>
 
           <section

@@ -65,6 +65,15 @@ interface DataGridRowKeyEntry<Row extends DataGridRow> {
   token: string
 }
 
+/** DataGrid 当前受控数据对应的行索引与行标识缓存。 */
+interface DataGridRowEntries<Row extends DataGridRow> {
+  /** 按原始数据顺序排列的行标识索引项。 */
+  entries: DataGridRowKeyEntry<Row>[]
+
+  /** 以类型安全行标识为键的行索引项映射。 */
+  entryMap: Map<string, DataGridRowKeyEntry<Row>>
+}
+
 /** 判断两个行标识序列是否完全一致。 */
 function isSameRowKeys(left: DataGridRowKey[], right: DataGridRowKey[]) {
   return (
@@ -106,6 +115,9 @@ export function useDataGridRowSelection<Row extends DataGridRow>(
   const selectedRowKeys = ref<DataGridRowKey[]>([])
   const synchronizingGrid = ref(false)
   const generatedKeyTokens = new Set<string>()
+  let cachedRows: Row[] | undefined
+  let cachedDataIndexes = new WeakMap<object, number>()
+  let cachedRowEntries: DataGridRowEntries<Row> | undefined
 
   const agRowSelection = computed<RowSelectionOptions<Row> | undefined>(() => {
     const config = options.getConfig()
@@ -170,20 +182,36 @@ export function useDataGridRowSelection<Row extends DataGridRow>(
     }
   })
 
+  /** 同步当前受控数组对应的索引缓存；数组引用变化时才重新遍历业务行。 */
+  function getCachedRows() {
+    const rows = options.getRows()
+    if (cachedRows !== rows) {
+      const nextDataIndexes = new WeakMap<object, number>()
+      rows.forEach((row, dataIndex) => nextDataIndexes.set(row, dataIndex))
+      cachedRows = rows
+      cachedDataIndexes = nextDataIndexes
+      cachedRowEntries = undefined
+    }
+    return rows
+  }
+
   function findDataIndex(row: Row) {
-    const directIndex = options.getRows().indexOf(row)
-    if (directIndex >= 0) {
+    const rows = getCachedRows()
+    const directIndex = cachedDataIndexes.get(row)
+    if (directIndex !== undefined) {
       return directIndex
     }
     const rowKey = options.getRowKey(row, -1)
-    return options
-      .getRows()
-      .findIndex((item, index) => Object.is(options.getRowKey(item, index), rowKey))
+    return rows.findIndex((item, index) => Object.is(options.getRowKey(item, index), rowKey))
   }
 
   function getRowEntries() {
+    const rows = getCachedRows()
+    if (cachedRowEntries) {
+      return cachedRowEntries
+    }
     const entryMap = new Map<string, DataGridRowKeyEntry<Row>>()
-    const entries = options.getRows().map<DataGridRowKeyEntry<Row>>((row, dataIndex) => {
+    const entries = rows.map<DataGridRowKeyEntry<Row>>((row, dataIndex) => {
       const rowKey = options.getRowKey(row, dataIndex)
       const token = encodeDataGridRowKey(rowKey)
       if (entryMap.has(token)) {
@@ -196,7 +224,8 @@ export function useDataGridRowSelection<Row extends DataGridRow>(
       entryMap.set(token, entry)
       return entry
     })
-    return { entries, entryMap }
+    cachedRowEntries = { entries, entryMap }
+    return cachedRowEntries
   }
 
   function normalizeKeys(keys: DataGridRowKey[]) {

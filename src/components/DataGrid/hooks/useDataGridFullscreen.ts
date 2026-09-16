@@ -35,6 +35,10 @@ export function useDataGridFullscreen(options: UseDataGridFullscreenOptions) {
   let previousFocus: HTMLElement | null = null
   let layoutFrameId: number | undefined
   let disposed = false
+  /** 全屏期间保留原挂载位置的占位节点，退出时据此还原表格。 */
+  let fullscreenPlaceholder: Comment | undefined
+  /** 表格进入全屏前所在的父节点。 */
+  let fullscreenParent: ParentNode | undefined
 
   const controller: ActiveDataGridFullscreen = {
     exit: () => exitFullscreen('instance-change'),
@@ -62,6 +66,33 @@ export function useDataGridFullscreen(options: UseDataGridFullscreenOptions) {
     })
   }
 
+  /**
+   * 将表格根节点提升到 body，避免父级创建的层叠上下文覆盖全屏表格。
+   * 占位节点确保退出全屏时能回到完全相同的位置。
+   */
+  function moveToFullscreenLayer() {
+    const element = options.getElement()
+    const parent = element?.parentNode
+    if (!element || !parent || fullscreenPlaceholder) {
+      return
+    }
+    fullscreenParent = parent
+    fullscreenPlaceholder = document.createComment('data-grid-fullscreen-placeholder')
+    parent.insertBefore(fullscreenPlaceholder, element)
+    document.body.append(element)
+  }
+
+  /** 将全屏表格还原到进入全屏前的组件挂载位置。 */
+  function restoreFromFullscreenLayer() {
+    const element = options.getElement()
+    if (element && fullscreenParent && fullscreenPlaceholder?.parentNode === fullscreenParent) {
+      fullscreenParent.insertBefore(element, fullscreenPlaceholder)
+      fullscreenPlaceholder.remove()
+    }
+    fullscreenPlaceholder = undefined
+    fullscreenParent = undefined
+  }
+
   function enterFullscreen(source: DataGridFullscreenChangeSource = 'api') {
     if (fullscreen.value) {
       return
@@ -71,6 +102,7 @@ export function useDataGridFullscreen(options: UseDataGridFullscreenOptions) {
     previousBodyOverflow = document.body.style.overflow
     previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null
     document.body.style.overflow = 'hidden'
+    moveToFullscreenLayer()
     fullscreen.value = true
     options.onChange(true, source)
     focusFullscreenTable()
@@ -82,6 +114,7 @@ export function useDataGridFullscreen(options: UseDataGridFullscreenOptions) {
       return
     }
     fullscreen.value = false
+    restoreFromFullscreenLayer()
     if (activeFullscreen === controller) {
       activeFullscreen = undefined
     }

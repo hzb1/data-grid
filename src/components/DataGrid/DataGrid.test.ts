@@ -394,6 +394,35 @@ describe('DataGrid component integration', () => {
     wrapper.unmount()
   })
 
+  it('将视口全屏表格提升到 body 以避开父级层叠上下文', async () => {
+    const host = document.createElement('div')
+    document.body.append(host)
+    const wrapper = mount(DataGrid, {
+      attachTo: host,
+      props: {
+        modelValue: [{ id: 1, name: '物料一' }],
+        columns,
+      },
+    })
+    const table = wrapper.vm.$.exposed as unknown as DataGridExpose<DataGridRow>
+
+    table.fullscreen.enter()
+    await nextTick()
+
+    const fullscreenGrid = document.body.querySelector('.data-grid.is-fullscreen')
+    expect(fullscreenGrid).not.toBeNull()
+    expect(fullscreenGrid?.parentElement).toBe(document.body)
+    expect(host.contains(fullscreenGrid)).toBe(false)
+
+    table.fullscreen.exit()
+    await nextTick()
+    expect(host.querySelector('.data-grid')).toBe(fullscreenGrid)
+    expect(host.querySelector('.data-grid.is-fullscreen')).toBeNull()
+
+    wrapper.unmount()
+    host.remove()
+  })
+
   it('uses the measured wrapped toolbar height only while calculating automatic height', async () => {
     let resizeCallback: ResizeObserverCallback = () => undefined
     const disconnect = vi.fn()

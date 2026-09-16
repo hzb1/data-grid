@@ -6,19 +6,17 @@ import type { Component } from 'vue'
  * 首版演示站支持的场景标识。
  *
  * - `basic`：基础展示、排序、固定列和汇总。
- * - `filter-selection`：表头筛选与多行选择。
- * - `edit-validation`：数据编辑、派生计算和业务校验。
+ * - `complex`：1,000 行的高密度订单明细、筛选、编辑与校验。
  */
-export type DemoId = 'basic' | 'filter-selection' | 'edit-validation'
+export type DemoId = 'basic' | 'complex'
 
 /**
  * 演示场景的学习阶段。
  *
  * - `入门`：帮助用户理解最小可用配置。
- * - `交互`：展示筛选、选择等用户操作。
- * - `业务`：展示编辑、计算与业务规则闭环。
+ * - `业务`：展示高密度数据、筛选、编辑、计算与业务规则闭环。
  */
-export type DemoLevel = '入门' | '交互' | '业务'
+export type DemoLevel = '入门' | '业务'
 
 /** 演示卡片中的单个代码标签页。 */
 export interface DemoCodeTab {
